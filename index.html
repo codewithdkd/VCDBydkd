@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,6 +52,24 @@
             text-align: center;
             margin-top: 20px;
         }
+        .break-message {
+            margin-top: 30px;
+            text-align: center;
+            background-color: #ffeb3b;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .break-message a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .break-message a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -72,7 +90,12 @@
 
         <div id="result" class="result"></div>
     </div>
- 
+
+    <div class="break-message">
+        Are you tired by working? Let's take a break.
+        <a href="https://example.com" target="_blank">Click here to relax</a>
+    </div>
+
     <script>
         const referenceArea = 610 * 610; // Reference area in mm² (600mm x 600mm)
         const referenceData = [
