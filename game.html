@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Matching Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .card.flipped {
+            background-color: #ffffff;
+            color: #007bff;
+            cursor: default;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Matching Game</h1>
+    <div class="game-board" id="gameBoard"></div>
+
+    <script>
+        const symbols = ['\u2605', '\u2665', '\u25B2', '\u25CF', '\u2605', '\u2665', '\u25B2', '\u25CF']; // Unicode symbols for stars, hearts, triangles, and circles
+        let shuffledSymbols = symbols.sort(() => 0.5 - Math.random());
+        let firstCard = null;
+        let secondCard = null;
+
+        const gameBoard = document.getElementById('gameBoard');
+
+        shuffledSymbols.forEach(symbol => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.dataset.symbol = symbol;
+            card.addEventListener('click', flipCard);
+            gameBoard.appendChild(card);
+        });
+
+        function flipCard() {
+            if (this.classList.contains('flipped') || secondCard) return;
+
+            this.textContent = this.dataset.symbol;
+            this.classList.add('flipped');
+
+            if (!firstCard) {
+                firstCard = this;
+            } else {
+                secondCard = this;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+                firstCard.classList.add('hidden');
+                secondCard.classList.add('hidden');
+                resetCards();
+            } else {
+                setTimeout(() => {
+                    firstCard.textContent = '';
+                    firstCard.classList.remove('flipped');
+                    secondCard.textContent = '';
+                    secondCard.classList.remove('flipped');
+                    resetCards();
+                }, 1000);
+            }
+        }
+
+        function resetCards() {
+            firstCard = null;
+            secondCard = null;
+        }
+    </script>
+</body>
+</html>
