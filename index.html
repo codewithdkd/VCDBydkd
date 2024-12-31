@@ -79,31 +79,37 @@
         ];
 
         function calculatePressure() {
-            const fpm = parseFloat(document.getElementById('fpm').value);
-            let resultText = "Please enter a valid FPM value.";
+    const fpm = parseFloat(document.getElementById('fpm').value);
+    let resultText = "Please enter a valid FPM value.";
 
-            if (fpm) {
-                if (fpm < 500 || fpm > 4000) {
-                    resultText = "FPM should be between 500 and 4000.";
-                } else {
-                    // Interpolation logic
-                    for (let i = 0; i < data.length - 1; i++) {
-                        if (fpm >= data[i].fpm && fpm <= data[i + 1].fpm) {
-                            const fpm1 = data[i].fpm;
-                            const fpm2 = data[i + 1].fpm;
-                            const pressure1 = data[i].pressure;
-                            const pressure2 = data[i + 1].pressure;
+    if (fpm) {
+        if (fpm < 500 || fpm > 4000) {
+            resultText = "FPM should be between 500 and 4000.";
+        } else {
+            // Interpolation logic
+            for (let i = 0; i < data.length - 1; i++) {
+                if (fpm >= data[i].fpm && fpm <= data[i + 1].fpm) {
+                    const fpm1 = data[i].fpm;
+                    const fpm2 = data[i + 1].fpm;
+                    const pressure1 = data[i].pressure;
+                    const pressure2 = data[i + 1].pressure;
 
-                            const pressure = pressure1 + ((pressure2 - pressure1) / (fpm2 - fpm1)) * (fpm - fpm1);
-                            resultText = `Pressure Drop at ${fpm} FPM: ${pressure.toFixed(2)} units`;
-                            break;
-                        }
-                    }
+                    const pressure = pressure1 + ((pressure2 - pressure1) / (fpm2 - fpm1)) * (fpm - fpm1);
+
+                    // Convert from Pascal to mm of H2O (1 Pascal = 0.10197 mm H2O)
+                    const pressureInMmH2O = pressure / 9.80665;
+
+                    resultText = `Pressure Drop at ${fpm} FPM: ${pressure.toFixed(2)} Pa<br>`;
+                    resultText += `Equivalent Pressure Drop: ${pressureInMmH2O.toFixed(2)} mm H₂O`;
+                    break;
                 }
             }
-
-            document.getElementById('result').innerText = resultText;
         }
+    }
+
+    document.getElementById('result').innerHTML = resultText;
+}
+
     </script>
 
 </body>
